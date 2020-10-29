@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html lang="en"><head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1"><!-- Begin Jekyll SEO tag v2.6.1 -->
+<title>Changelog | Your awesome title</title>
+<meta name="generator" content="Jekyll v3.9.0" />
+<meta property="og:title" content="Changelog" />
+<meta property="og:locale" content="en_US" />
+<meta name="description" content="Write an awesome description for your new site here. You can edit this line in _config.yml. It will appear in your document head meta (for Google search results) and in your feed.xml site description." />
+<meta property="og:description" content="Write an awesome description for your new site here. You can edit this line in _config.yml. It will appear in your document head meta (for Google search results) and in your feed.xml site description." />
+<link rel="canonical" href="http://localhost:4000/roblox-lua-promise/CHANGELOG.html" />
+<meta property="og:url" content="http://localhost:4000/roblox-lua-promise/CHANGELOG.html" />
+<meta property="og:site_name" content="Your awesome title" />
+<script type="application/ld+json">
+{"@type":"WebPage","url":"http://localhost:4000/roblox-lua-promise/CHANGELOG.html","headline":"Changelog","description":"Write an awesome description for your new site here. You can edit this line in _config.yml. It will appear in your document head meta (for Google search results) and in your feed.xml site description.","@context":"https://schema.org"}</script>
+<!-- End Jekyll SEO tag -->
+<link rel="stylesheet" href="/assets/main.css"><link type="application/atom+xml" rel="alternate" href="http://localhost:4000/feed.xml" title="Your awesome title" /></head>
+<body><header class="site-header" role="banner">
+
+  <div class="wrapper"><a class="site-title" rel="author" href="/">Your awesome title</a><nav class="site-nav">
+        <input type="checkbox" id="nav-trigger" class="nav-trigger" />
+        <label for="nav-trigger">
+          <span class="menu-icon">
+            <svg viewBox="0 0 18 15" width="18px" height="15px">
+              <path d="M18,1.484c0,0.82-0.665,1.484-1.484,1.484H1.484C0.665,2.969,0,2.304,0,1.484l0,0C0,0.665,0.665,0,1.484,0 h15.032C17.335,0,18,0.665,18,1.484L18,1.484z M18,7.516C18,8.335,17.335,9,16.516,9H1.484C0.665,9,0,8.335,0,7.516l0,0 c0-0.82,0.665-1.484,1.484-1.484h15.032C17.335,6.031,18,6.696,18,7.516L18,7.516z M18,13.516C18,14.335,17.335,15,16.516,15H1.484 C0.665,15,0,14.335,0,13.516l0,0c0-0.82,0.665-1.483,1.484-1.483h15.032C17.335,12.031,18,12.695,18,13.516L18,13.516z"/>
+            </svg>
+          </span>
+        </label>
+
+        <div class="trigger"><a class="page-link" href="/roblox-lua-promise/lib/Examples.html">Examples</a><a class="page-link" href="/roblox-lua-promise/lib/Installation.html">Installation</a><a class="page-link" href="/roblox-lua-promise/lib/README.html">Promise</a><a class="page-link" href="/roblox-lua-promise/lib/Tour.html">Tour of Promises</a><a class="page-link" href="/roblox-lua-promise/lib/WhyUsePromises.html">Why use Promises?</a><a class="page-link" href="/about/">About</a><a class="page-link" href="/docs/example.html">Usage</a><a class="page-link" href="/docs/">Home</a><a class="page-link" href="/roblox-lua-promise/CHANGELOG.html">Changelog</a></div>
+      </nav></div>
+</header>
+<main class="page-content" aria-label="Content">
+      <div class="wrapper">
+        <article class="post">
+
+  <header class="post-header">
+    <h1 class="post-title">Changelog</h1>
+  </header>
+
+  <div class="post-content">
+    <h1 id="changelog">Changelog</h1>
+
+<h2 id="301---2020-08-24">[3.0.1] - 2020-08-24</h2>
+<h3 id="fixed">Fixed</h3>
+<ul>
+  <li>Make <code class="language-plaintext highlighter-rouge">Promise.is</code> work with promises from old versions of the library (#41)</li>
+  <li>Make <code class="language-plaintext highlighter-rouge">Promise.delay</code> properly break out of the current loop (#40)</li>
+  <li>Allow upvalues captured by queued callbacks to be garbage collected when the Promise resolves by deleting the queues when the Promise settles (#39)</li>
+</ul>
+
+<h2 id="300---2020-08-17">[3.0.0] - 2020-08-17</h2>
+<h3 id="changed">Changed</h3>
+<ul>
+  <li><code class="language-plaintext highlighter-rouge">Promise.delay</code> now uses <code class="language-plaintext highlighter-rouge">os.clock</code></li>
+  <li>Made <code class="language-plaintext highlighter-rouge">Promise.delay</code> behavior more consistent when creating new timers in the callback of a timer.</li>
+</ul>
+
+<h2 id="300-rc3---2020-07-10">[3.0.0-rc.3] - 2020-07-10</h2>
+<h3 id="fixed-1">Fixed</h3>
+<ul>
+  <li>Fixed a bug where queued <code class="language-plaintext highlighter-rouge">andThen</code> and <code class="language-plaintext highlighter-rouge">catch</code> callbacks did not begin on their own new threads.</li>
+</ul>
+
+<h2 id="300-rc1---2020-06-02">[3.0.0-rc.1] - 2020-06-02</h2>
+<h3 id="changed-1">Changed</h3>
+<ul>
+  <li>Runtime errors are now represented by objects. You must call tostring on rejection values before assuming they are strings (this was always good practice, but is required now).</li>
+  <li>Yielding is now allowed in <code class="language-plaintext highlighter-rouge">Promise.new</code>, <code class="language-plaintext highlighter-rouge">andThen</code>, and <code class="language-plaintext highlighter-rouge">Promise.try</code> executors.</li>
+  <li>Errors now have much better stack traces due to using <code class="language-plaintext highlighter-rouge">xpcall</code> internally instead of <code class="language-plaintext highlighter-rouge">pcall</code>.</li>
+  <li>Stack traces will now be more direct and not include as many internal calls within the Promise library.</li>
+  <li>Chained promises from <code class="language-plaintext highlighter-rouge">resolve()</code> or returning from andThen now have improved rejection messages for debugging.</li>
+  <li><code class="language-plaintext highlighter-rouge">Promise.async</code> has been renamed to <code class="language-plaintext highlighter-rouge">Promise.defer</code> (<code class="language-plaintext highlighter-rouge">Promise.async</code> references same function for compatibility)</li>
+  <li>Promises now have a <code class="language-plaintext highlighter-rouge">__tostring</code> metamethod, which returns <code class="language-plaintext highlighter-rouge">Promise(Resolved)</code> or whatever the current status is.</li>
+  <li><code class="language-plaintext highlighter-rouge">Promise:timeout()</code> now rejects with a <code class="language-plaintext highlighter-rouge">Promise.Error(Promise.Error.Kind.TimedOut)</code> object. (Formerly rejected with the string <code class="language-plaintext highlighter-rouge">"Timed out"</code>)</li>
+  <li>Attaching a handler to a cancelled Promise now rejects with a <code class="language-plaintext highlighter-rouge">Promise.Error(Promise.Error.Kind.AlreadyCancelled)</code>. (Formerly rejected with the string <code class="language-plaintext highlighter-rouge">"Promise is cancelled"</code>)</li>
+  <li>Let <code class="language-plaintext highlighter-rouge">Promise:expect()</code> throw rejection objects</li>
+</ul>
+
+<h3 id="added">Added</h3>
+
+<ul>
+  <li>New Promise Error class is exposed at <code class="language-plaintext highlighter-rouge">Promise.Error</code>, which includes helpful static methods like <code class="language-plaintext highlighter-rouge">Promise.Error.is</code>.</li>
+  <li>Added <code class="language-plaintext highlighter-rouge">Promise:now()</code> (#23)</li>
+  <li>Added <code class="language-plaintext highlighter-rouge">Promise.each</code> (#21)</li>
+  <li>Added <code class="language-plaintext highlighter-rouge">Promise.retry</code> (#16)</li>
+  <li>Added <code class="language-plaintext highlighter-rouge">Promise.fromEvent</code> (#14)</li>
+  <li>Improved test coverage for asynchronous and time-driven functions</li>
+</ul>
+
+<h3 id="fixed-2">Fixed</h3>
+<ul>
+  <li>Changed <code class="language-plaintext highlighter-rouge">Promise.is</code> to be safe when dealing with tables that have an <code class="language-plaintext highlighter-rouge">__index</code> metamethod that creates an error.</li>
+  <li><code class="language-plaintext highlighter-rouge">Promise.delay</code> resolve value (time passed) is now more accurate (previously passed time based on when we started resuming threads instead of the current time. This is a very minor difference.)</li>
+</ul>
+
+<h2 id="251">[2.5.1]</h2>
+
+<ul>
+  <li>Fix issue with rejecting with non-string not propagating correctly.</li>
+</ul>
+
+<h2 id="250">[2.5.0]</h2>
+
+<ul>
+  <li>Add Promise.tap</li>
+  <li>Fix bug with C functions not working when passed to andThen</li>
+  <li>Fix issue with Promise.race/all always cancelling instead of only cancelling if the Promise has no other consumers</li>
+  <li>Make error checking more robust across many methods.</li>
+  <li>Promise.Status members are now strings instead of symbols, and indexing a non-existent value will error.</li>
+  <li>Improve stack traces</li>
+  <li>Promise.promisify will now turn errors into rejections even if they occur after a yield.</li>
+  <li>Add Promise.try</li>
+  <li>Add <code class="language-plaintext highlighter-rouge">done</code>, <code class="language-plaintext highlighter-rouge">doneCall</code>, <code class="language-plaintext highlighter-rouge">doneReturn</code></li>
+  <li>Add <code class="language-plaintext highlighter-rouge">andThenReturn</code>, <code class="language-plaintext highlighter-rouge">finallyReturn</code></li>
+  <li>Add <code class="language-plaintext highlighter-rouge">Promise.delay</code>, <code class="language-plaintext highlighter-rouge">promise:timeout</code></li>
+  <li>Add <code class="language-plaintext highlighter-rouge">Promise.some</code>, <code class="language-plaintext highlighter-rouge">Promise.any</code></li>
+  <li>Add <code class="language-plaintext highlighter-rouge">Promise.allSettled</code></li>
+  <li><code class="language-plaintext highlighter-rouge">Promise.all</code> and <code class="language-plaintext highlighter-rouge">Promise.race</code> are now cancellable.</li>
+</ul>
+
+<h2 id="240">[2.4.0]</h2>
+
+<ul>
+  <li><code class="language-plaintext highlighter-rouge">Promise.is</code> now only checks if the object is “andThennable” (has an <code class="language-plaintext highlighter-rouge">andThen</code> method).</li>
+</ul>
+
+<h2 id="231">[2.3.1]</h2>
+
+<ul>
+  <li>Make unhandled rejection warning trigger on next Heartbeat</li>
+</ul>
+
+<h2 id="230">[2.3.0]</h2>
+
+<ul>
+  <li>Remove <code class="language-plaintext highlighter-rouge">Promise.spawn</code> from the public API.</li>
+  <li><code class="language-plaintext highlighter-rouge">Promise.async</code> still inherits the behavior from <code class="language-plaintext highlighter-rouge">Promise.spawn</code>.</li>
+  <li><code class="language-plaintext highlighter-rouge">Promise.async</code> now wraps the callback in <code class="language-plaintext highlighter-rouge">pcall</code> and rejects if an error occurred.</li>
+  <li><code class="language-plaintext highlighter-rouge">Promise.new</code> has now has an explicit error message when attempting to yield inside of it.</li>
+</ul>
+
+<h2 id="220">[2.2.0]</h2>
+
+<ul>
+  <li><code class="language-plaintext highlighter-rouge">Promise.promisify</code> now uses <code class="language-plaintext highlighter-rouge">coroutine.wrap</code> instead of <code class="language-plaintext highlighter-rouge">Promise.spawn</code></li>
+</ul>
+
+<h2 id="210">[2.1.0]</h2>
+
+<ul>
+  <li>Add <code class="language-plaintext highlighter-rouge">finallyCall</code>, <code class="language-plaintext highlighter-rouge">andThenCall</code></li>
+  <li>Add <code class="language-plaintext highlighter-rouge">awaitValue</code></li>
+</ul>
+
+<h2 id="200">[2.0.0]</h2>
+
+<ul>
+  <li>Add Promise.race</li>
+  <li>Add Promise.async</li>
+  <li>Add Promise.spawn</li>
+  <li>Add Promise.promisify</li>
+  <li><code class="language-plaintext highlighter-rouge">finally</code> now silences the unhandled rejection warning</li>
+  <li><code class="language-plaintext highlighter-rouge">onCancel</code> now returns if the Promise was cancelled at call time.</li>
+  <li>Cancellation now propagates downstream.</li>
+  <li>Add <code class="language-plaintext highlighter-rouge">Promise:awaitStatus</code></li>
+  <li>Calling <code class="language-plaintext highlighter-rouge">resolve</code> with a Promise while the resolving Promise is cancelled instantly cancels the passed Promise as an optimization.</li>
+  <li><code class="language-plaintext highlighter-rouge">finally</code> now passes the Promise status as a parameter.</li>
+</ul>
+
+  </div>
+
+</article>
+
+      </div>
+    </main><footer class="site-footer h-card">
+  <data class="u-url" href="/"></data>
+
+  <div class="wrapper">
+
+    <h2 class="footer-heading">Your awesome title</h2>
+
+    <div class="footer-col-wrapper">
+      <div class="footer-col footer-col-1">
+        <ul class="contact-list">
+          <li class="p-name">Your awesome title</li><li><a class="u-email" href="mailto:your-email@example.com">your-email@example.com</a></li></ul>
+      </div>
+
+      <div class="footer-col footer-col-2"><ul class="social-media-list"><li><a href="https://github.com/jekyll"><svg class="svg-icon"><use xlink:href="/assets/minima-social-icons.svg#github"></use></svg> <span class="username">jekyll</span></a></li><li><a href="https://www.twitter.com/jekyllrb"><svg class="svg-icon"><use xlink:href="/assets/minima-social-icons.svg#twitter"></use></svg> <span class="username">jekyllrb</span></a></li></ul>
+</div>
+
+      <div class="footer-col footer-col-3">
+        <p>Write an awesome description for your new site here. You can edit this line in _config.yml. It will appear in your document head meta (for Google search results) and in your feed.xml site description.</p>
+      </div>
+    </div>
+
+  </div>
+
+</footer>
+</body>
+
+</html>
