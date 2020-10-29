@@ -1,0 +1,67 @@
+{
+  "name": "lionstore",
+  "tree": {
+    "$className": "DataModel",
+    "HttpService": {
+      "$className": "HttpService",
+      "$properties": {
+        "HttpEnabled": true
+      }
+    },
+    "Lighting": {
+      "$className": "Lighting",
+      "$properties": {
+        "GlobalShadows": true,
+        "Outlines": false,
+        "Technology": "Voxel",
+        "Brightness": 2.0,
+        "Ambient": [
+          0.0,
+          0.0,
+          0.0
+        ]
+      }
+    },
+    "ReplicatedStorage": {
+      "$className": "ReplicatedStorage"
+      
+    },
+    "SoundService": {
+      "$className": "SoundService",
+      "$properties": {
+        "RespectFilteringEnabled": true
+      }
+    },
+    "Workspace": {
+      "Source": {
+        "$path": "src"
+      },
+      "$className": "Workspace",
+      "$properties": {
+        "FilteringEnabled": true
+      },
+      "Baseplate": {
+        "$className": "Part",
+        "$properties": {
+          "Locked": true,
+          "Size": [
+            512.0,
+            20.0,
+            512.0
+          ],
+          "Position": [
+            0.0,
+            -10.0,
+            0.0
+          ],
+          "Color": [
+            0.38823,
+            0.37254,
+            0.38823
+          ],
+          "Anchored": true
+        }
+      }
+    }
+  }
+}
