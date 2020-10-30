@@ -16,15 +16,17 @@ Must be 1+, allocates a DataStore into smaller partitions with limit `DataSize/P
 The default data loaded into a new player. If missing entries of a preloaded profile exists, the data will be [reconciled](https://madstudioroblox.github.io/ProfileService/api/#profilereconcile).
 
 ### HandleLocked
-`callback(Player: instance, Data: table)`
+`callback(Player: instance, Data: MainData) -> boolean`
 
 Calls when the profile is locked and does not load.
+If true is returned, continue loading.
 
 ### HandleCorruption
-`callback(Player: instance, Data: table)`
+`callback(Player: instance, Data: MainData) -> boolean`
 
 
 Calls when the profile is corrupted and does not load.
+If true is returned, continue loading.
 
 ### BeforeSave
 `modifier(Player: instance, Data: table) -> Data`
@@ -101,6 +103,24 @@ Yields until the profile is locked. The library automatically locks the profile 
 Save() -> Promise
 ```
 Saves the profile. Returns a [promise](https://eryn.io/roblox-lua-promise/). Sets lock timer to 0 and increments the version number. The library automatically saves the profile when the player leaves.
+
+### :SaveAsync
+```
+SaveAsync()
+```
+`:Save` but yields the thread.
+
+### :isLocked
+```
+isLocked() -> boolean
+```
+Returns whether the profile is locked.
+
+### .Release
+```
+BindableEvent
+```
+If your profile is locked by another server as it saves, you can connect to this when the profile is released. Don't use `:Wait` since it may not fire at all.
 
 ### .MainData
 

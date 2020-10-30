@@ -18,6 +18,7 @@ nav:
   - Home: 'index.md'
   - Usage: 'usage.md'
   - API: 'api.md'
+  - Tips: 'tips.md'
 
 markdown_extensions:
   - admonition

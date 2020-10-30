@@ -386,6 +386,20 @@
 </li>
         
           <li class="md-nav__item">
+  <a href="#islocked" class="md-nav__link">
+    :isLocked
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#release" class="md-nav__link">
+    .Release
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
   <a href="#maindata" class="md-nav__link">
     .MainData
   </a>
@@ -567,6 +581,20 @@
 </li>
         
           <li class="md-nav__item">
+  <a href="#islocked" class="md-nav__link">
+    :isLocked
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#release" class="md-nav__link">
+    .Release
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
   <a href="#maindata" class="md-nav__link">
     .MainData
   </a>
@@ -609,11 +637,13 @@
 <p><code>table</code> <strong>Required</strong></p>
 <p>The default data loaded into a new player. If missing entries of a preloaded profile exists, the data will be <a href="https://madstudioroblox.github.io/ProfileService/api/#profilereconcile">reconciled</a>.</p>
 <h3 id="handlelocked">HandleLocked</h3>
-<p><code>callback(Player: instance, Data: table)</code></p>
-<p>Calls when the profile is locked and does not load.</p>
+<p><code>callback(Player: instance, Data: MainData) -&gt; boolean</code></p>
+<p>Calls when the profile is locked and does not load.
+If true is returned, continue loading.</p>
 <h3 id="handlecorruption">HandleCorruption</h3>
-<p><code>callback(Player: instance, Data: table)</code></p>
-<p>Calls when the profile is corrupted and does not load.</p>
+<p><code>callback(Player: instance, Data: MainData) -&gt; boolean</code></p>
+<p>Calls when the profile is corrupted and does not load.
+If true is returned, continue loading.</p>
 <h3 id="beforesave">BeforeSave</h3>
 <p><code>modifier(Player: instance, Data: table) -&gt; Data</code></p>
 <p>Calls when the profile is about to be saved. <strong>Must return profile data</strong>. Use to serialize.</p>
@@ -671,6 +701,15 @@
 </code></pre></div>
 
 <p>Saves the profile. Returns a <a href="https://eryn.io/roblox-lua-promise/">promise</a>. Sets lock timer to 0 and increments the version number. The library automatically saves the profile when the player leaves.</p>
+<h3 id="islocked">:isLocked</h3>
+<div class="codehilite"><pre><span></span><code><span class="err">isLocked() -&gt; boolean</span>
+</code></pre></div>
+
+<p>Returns whether the profile is locked.</p>
+<h3 id="release">.Release</h3>
+<div class="codehilite"><pre><span></span><code><span class="err">BindableEvent</span>
+</code></pre></div>
+
 <h3 id="maindata">.MainData</h3>
 <div class="admonition warning">
 <p class="admonition-title">Warning</p>

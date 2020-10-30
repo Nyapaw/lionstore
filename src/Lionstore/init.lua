@@ -13,6 +13,10 @@ local TableUtil = require(script.TableUtil)
 local DataStoreService = game:GetService("DataStoreService")
 local HttpService = game:GetService("HttpService")
 local Players = game:GetService("Players")
+local MessagingService = game:GetService("MessagingService")
+local RunService = game:GetService("RunService")
+
+local IsStudio = RunService:IsStudio()
 
 Lionstore.Profiles = {}
 local Profiles = Lionstore.Profiles
@@ -31,6 +35,10 @@ end;
 
 local warn = function(...)
     warn("Lionstore; " .. concat(...))
+end;
+
+local function wait(n)
+    Promise.delay(n):await()
 end;
 
 local Shutdown = false
@@ -68,7 +76,8 @@ function Lionstore.new(Key, Player)
     Profile.Player = Player
     Profile.Datastore = DataStoreService:GetDataStore(Key)
     
-    Profile.Key = Player.UserId
+    Profile.DatastoreKey = Key
+    Profile.Key = tostring(Player.UserId)
 
     Profile.Loaded = Profile:getDS()
     Profile.CurrentData = Queue.new(Lionstore.Info.Partitions)
@@ -82,10 +91,14 @@ function Lionstore.new(Key, Player)
                 if Shutdown or not Player.Parent then
                     break
                 end
-                Profile:Lock()
+                if (Profile:isLocked()) then
+                    Profile:Lock()
+                end;
             end
         end;
     end)
+
+    Profile.Release = Instance.new("BindableEvent")
 
     return Profile
 end 
@@ -99,7 +112,7 @@ game:BindToClose(function()
         if (Profile.Saving) then
             Profile.Saving:await()
         else
-            Profile:Save():await()
+            Profile:SaveAsync()
         end;
     end
 end)
@@ -108,13 +121,24 @@ Players.PlayerRemoving:Connect(function(Player)
     local Profile = Profiles[Player]
     if Profile then
         if Profile.Success then 
-            Profiles[Player].Saving = Profile:Save()
-            Profiles[Player].Saving:await() 
+            Profile.Saving = Profile:Save()
+
+            if (Profile.Saving) then
+                Profile.Saving:await() 
+            end;
         end;
         
+        Profile.Release:Destroy()
+        if (Profile.OnUpdate) then
+            Profile.OnUpdate:Disconnect()
+        end;
         Profiles[Player] = nil
     end
 end)
+
+function Lionstore:isLocked()
+    return self.MainData.Locked > os.time()
+end
 
 function Lionstore:loaded()
     return self.Loaded:getStatus() ~= "Started"
@@ -155,11 +179,37 @@ function Lionstore:habitat(Callback, ErrHandle)
     end
 end
 
+function Lionstore:GetChannel()
+    return Promise.defer(function(resolve)
+        resolve(MessagingService:SubscribeAsync(self.Key, function()
+            self.Release:Fire()
+        end))
+    end):andThen(function(Con)
+        self.OnUpdate = Con
+    end):catch(function(err)
+    
+        warn(err)
+        wait(5)
+        return self:GetChannel()
+    end)
+end
+
+function Lionstore:SendRelease()
+    return Promise.new(function(resolve)
+        resolve(MessagingService:PublishAsync(self.Key))
+    end):catch(function(err)
+    
+        warn(err)
+        wait(5)
+        return self:SendRelease()
+    end)
+end
+
 function Lionstore:getDS()
     local Player = self.Player
     local Info = Lionstore.Info
 
-    local this = Promise.async(function(resolve, reject)
+    local this = Promise.defer(function(resolve, reject)
         local Success, Result = pcall(self.Datastore.GetAsync, self.Datastore, self.Key)
         if not Player.Parent then
             return
@@ -176,16 +226,25 @@ function Lionstore:getDS()
         if (Result) then
             Result = HttpService:JSONDecode(Result)
             if (Result.Corrupted) then
+                local Type
+
                 if (Info.HandleCorruption) then
-                    Info.HandleCorruption(Player, Result)
+                    Type = Info.HandleCorruption(Player, Result)
                 end;
-                return
+                if (not Type) then
+                    return
+                end;
             end
             if (Result.Locked > os.time()) then
+                local Type
+
                 if (Info.HandleLocked) then
-                    Info.HandleLocked(Player, Result)
+                    self:GetChannel()
+                    Type = Info.HandleLocked(Player, Result)
                 end;
-                return
+                if (not Type) then
+                    return
+                end;
             end
             self.MainData = Result
             self.CurrentData.list = Result.Data
@@ -235,10 +294,15 @@ end
 
 function Lionstore:Lock()
     print("Lock", self.Player.Name)
-    self:setDS(function(Data)
+    local P = self:setDS(function(Data)
         Data.Locked = os.time() + 600
         return Data
-    end, "lock"):await()
+    end, true)
+    
+    if not P then
+        return
+    end
+    P:await()
 end
 
 function Lionstore:Save()
@@ -258,24 +322,32 @@ function Lionstore:Save()
     end)
 end
 
-function Lionstore:setDS(Callback, Message)
+function Lionstore:SaveAsync()
+    local P = self:Save()
+    if not P then
+        return
+    end
+    P:await()
+end
+
+function Lionstore:setDS(Callback, isLock)
     local Player = self.Player
     if not self.MainData then
         return
     end
-    print("saving", self.Player.Name, Message or "")
+    if not game:GetService("ServerStorage"):FindFirstChild("lionstoreSave") and IsStudio then
+        warn("data won't save due to no 'lionstoreSave' object in ServerStorage")
+        return
+    end
+    print("saving", self.Player.Name, isLock and "lock")
     local Data = Callback(self.MainData)
-
-    local this = Promise.async(function(resolve, reject)
-        local Success, Result = pcall(self.Datastore.SetAsync, self.Datastore, self.Key, HttpService:JSONEncode(Data))
-        if Success then 
-            resolve()
-        else
-            reject(Result)
-        end
-        
+    local this = Promise.defer(function(resolve)
+        resolve(self.Datastore:SetAsync(self.Key, HttpService:JSONEncode(Data)))
     end):andThen(function()
-        print("saved".. (Message and " " .. Message or ""), Player.Name)
+        if (not isLock) then
+            self:SendRelease():await()
+        end;
+        print("saved", Player.Name, isLock and "lock")
     end):catch(function(Result)
         warn(Result)
         print("set fail", Player.Name, "retrying")
