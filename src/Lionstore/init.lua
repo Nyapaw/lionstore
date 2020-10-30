@@ -161,6 +161,9 @@ function Lionstore:getDS()
 
     local this = Promise.async(function(resolve, reject)
         local Success, Result = pcall(self.Datastore.GetAsync, self.Datastore, self.Key)
+        if not Player.Parent then
+            return
+        end
         if Success then 
             resolve(Result)
         else
@@ -168,9 +171,7 @@ function Lionstore:getDS()
         end
         
     end):andThen(function(Result)
-        if not Player.Parent then
-            return
-        end
+        
         
         if (Result) then
             Result = HttpService:JSONDecode(Result)

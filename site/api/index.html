@@ -615,11 +615,11 @@
 <p><code>callback(Player: instance, Data: table)</code></p>
 <p>Calls when the profile is corrupted and does not load.</p>
 <h3 id="beforesave">BeforeSave</h3>
-<p><code>modifier(Player: instance, Data: table) -&gt; table</code></p>
-<p>Calls when the profile is about to be saved. <strong>Must return profile data</strong>.</p>
+<p><code>modifier(Player: instance, Data: table) -&gt; Data</code></p>
+<p>Calls when the profile is about to be saved. <strong>Must return profile data</strong>. Use to serialize.</p>
 <h3 id="beforeinitialget">BeforeInitialGet</h3>
-<p><code>modifier(Player: instance, Data: table) -&gt; table</code></p>
-<p>Calls when after a value is received from Roblox data stores. <strong>Must return profile data</strong>.</p>
+<p><code>modifier(Player: instance, Data: table) -&gt; Data</code></p>
+<p>Calls when after a value is received from Roblox data stores. <strong>Must return profile data</strong>. Use to deserialize.</p>
 <h2 id="lionstore">Lionstore</h2>
 <h3 id="setinfo">.SetInfo</h3>
 <div class="codehilite"><pre><span></span><code><span class="err">SetInfo(InfoSettings)</span>
@@ -648,7 +648,7 @@
 
 <p>Returns the data.</p>
 <h3 id="update">:update</h3>
-<div class="codehilite"><pre><span></span><code><span class="err">update(modifier(data: table))</span>
+<div class="codehilite"><pre><span></span><code><span class="err">update(modifier(data: table) -&gt; data)</span>
 </code></pre></div>
 
 <p>Update the data. <strong>Must return profile data</strong>.</p>
