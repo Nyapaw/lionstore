@@ -386,6 +386,27 @@
 </li>
         
           <li class="md-nav__item">
+  <a href="#saveasync" class="md-nav__link">
+    :SaveAsync
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#islocked" class="md-nav__link">
+    :isLocked
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#release" class="md-nav__link">
+    .Release
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
   <a href="#maindata" class="md-nav__link">
     .MainData
   </a>
@@ -401,6 +422,18 @@
   
 </nav>
     
+  </li>
+
+    
+      
+      
+      
+
+
+  <li class="md-nav__item">
+    <a href="../tips/" class="md-nav__link">
+      Tips
+    </a>
   </li>
 
     
@@ -567,6 +600,27 @@
 </li>
         
           <li class="md-nav__item">
+  <a href="#saveasync" class="md-nav__link">
+    :SaveAsync
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#islocked" class="md-nav__link">
+    :isLocked
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#release" class="md-nav__link">
+    .Release
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
   <a href="#maindata" class="md-nav__link">
     .MainData
   </a>
@@ -609,11 +663,13 @@
 <p><code>table</code> <strong>Required</strong></p>
 <p>The default data loaded into a new player. If missing entries of a preloaded profile exists, the data will be <a href="https://madstudioroblox.github.io/ProfileService/api/#profilereconcile">reconciled</a>.</p>
 <h3 id="handlelocked">HandleLocked</h3>
-<p><code>callback(Player: instance, Data: table)</code></p>
-<p>Calls when the profile is locked and does not load.</p>
+<p><code>callback(Player: instance, Data: MainData) -&gt; boolean</code></p>
+<p>Calls when the profile is locked and does not load.
+If true is returned, continue loading.</p>
 <h3 id="handlecorruption">HandleCorruption</h3>
-<p><code>callback(Player: instance, Data: table)</code></p>
-<p>Calls when the profile is corrupted and does not load.</p>
+<p><code>callback(Player: instance, Data: MainData) -&gt; boolean</code></p>
+<p>Calls when the profile is corrupted and does not load.
+If true is returned, continue loading.</p>
 <h3 id="beforesave">BeforeSave</h3>
 <p><code>modifier(Player: instance, Data: table) -&gt; Data</code></p>
 <p>Calls when the profile is about to be saved. <strong>Must return profile data</strong>. Use to serialize.</p>
@@ -671,6 +727,21 @@
 </code></pre></div>
 
 <p>Saves the profile. Returns a <a href="https://eryn.io/roblox-lua-promise/">promise</a>. Sets lock timer to 0 and increments the version number. The library automatically saves the profile when the player leaves.</p>
+<h3 id="saveasync">:SaveAsync</h3>
+<div class="codehilite"><pre><span></span><code><span class="err">SaveAsync()</span>
+</code></pre></div>
+
+<p><code>:Save</code> but yields the thread.</p>
+<h3 id="islocked">:isLocked</h3>
+<div class="codehilite"><pre><span></span><code><span class="err">isLocked() -&gt; boolean</span>
+</code></pre></div>
+
+<p>Returns whether the profile is locked.</p>
+<h3 id="release">.Release</h3>
+<div class="codehilite"><pre><span></span><code><span class="err">BindableEvent</span>
+</code></pre></div>
+
+<p>If your profile is locked by another server as it saves, you can connect to this when the profile is released. Don't use <code>:Wait</code> since it may not fire at all.</p>
 <h3 id="maindata">.MainData</h3>
 <div class="admonition warning">
 <p class="admonition-title">Warning</p>
@@ -721,6 +792,20 @@
             </div>
           </a>
         
+        
+          <a href="../tips/" class="md-footer-nav__link md-footer-nav__link--next" rel="next">
+            <div class="md-footer-nav__title">
+              <div class="md-ellipsis">
+                <span class="md-footer-nav__direction">
+                  Next
+                </span>
+                Tips
+              </div>
+            </div>
+            <div class="md-footer-nav__button md-icon">
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M4 11v2h12l-5.5 5.5 1.42 1.42L19.84 12l-7.92-7.92L10.5 5.5 16 11H4z"/></svg>
+            </div>
+          </a>
         
       </nav>
     </div>
