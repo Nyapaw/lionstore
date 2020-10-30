@@ -1,1 +1,24 @@
+
 site_name: Lionstore
+site_url: https://nyapaw.github.io/lionstore/
+repo_name: Nyapaw/lionstore
+repo_url: https://github.com/nyapaw/lionstore
+
+
+site_name: Lionstore
+
+theme:
+  name: material
+  palette:
+    primary: brown
+    accent: amber
+
+
+nav:
+  - Home: 'index.md'
+  - Usage: 'usage.md'
+  - API: 'api.md'
+
+markdown_extensions:
+  - admonition
+  - codehilite

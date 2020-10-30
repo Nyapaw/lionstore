@@ -38,7 +38,7 @@ local Shutdown = false
 Lionstore.Info = {
     Partitions = 1;
     Default = {},
-    HandleError = function(Player)
+    HandleLocked = function(Player)
         Player:Kick()
     end,
     --BeforeSave
@@ -175,11 +175,15 @@ function Lionstore:getDS()
         if (Result) then
             Result = HttpService:JSONDecode(Result)
             if (Result.Corrupted) then
-                Info.HandleCorruption(Player, Result)
+                if (Info.HandleCorruption) then
+                    Info.HandleCorruption(Player, Result)
+                end;
                 return
             end
             if (Result.Locked > os.time()) then
-                Info.HandleLocked(Player, Result)
+                if (Info.HandleLocked) then
+                    Info.HandleLocked(Player, Result)
+                end;
                 return
             end
             self.MainData = Result
