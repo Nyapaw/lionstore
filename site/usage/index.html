@@ -277,7 +277,6 @@
                 
                 <h1 id="usage">Usage</h1>
 <p>Lionstore automatically keeps profiles alive as long as the player has not left. Saves are brute force and will be retried until the save succeeds.</p>
-<p>EDIT. v3 lets you do this</p>
 <div class="codehilite"><pre><span></span><code><span class="kd">local</span> <span class="n">Lionstore</span> <span class="o">=</span> <span class="nb">require</span><span class="p">(</span><span class="n">script</span><span class="p">.</span><span class="n">Parent</span><span class="p">.</span><span class="n">Lionstore</span><span class="p">)</span>
 
 <span class="n">Lionstore</span><span class="p">.</span><span class="n">SetInfo</span><span class="p">({</span>
@@ -285,78 +284,23 @@
     <span class="n">Default</span> <span class="o">=</span> <span class="p">{</span><span class="n">Log</span> <span class="o">=</span> <span class="mi">0</span><span class="p">},</span>
     <span class="n">HandleLocked</span> <span class="o">=</span> <span class="kr">function</span><span class="p">(</span><span class="n">Player</span><span class="p">)</span>
         <span class="nb">print</span><span class="p">(</span><span class="n">Player</span><span class="p">.</span><span class="n">Name</span> <span class="o">..</span> <span class="s2">&quot; has data loaded elsewhere&quot;</span><span class="p">)</span>
-        <span class="kd">local</span> <span class="n">Profile</span> <span class="o">=</span> <span class="n">Lionstore</span><span class="p">.</span><span class="n">GetProfile</span><span class="p">(</span><span class="n">Player</span><span class="p">)</span>
-        <span class="n">Profile</span><span class="p">.</span><span class="n">Release</span><span class="p">.</span><span class="n">Event</span><span class="p">:</span><span class="n">Wait</span><span class="p">()</span>
-        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;other servers done&quot;</span><span class="p">)</span>
-        <span class="kr">return</span> <span class="kc">true</span>
     <span class="kr">end</span><span class="p">,</span>
-    <span class="n">HandleCorruption</span> <span class="o">=</span> <span class="kr">function</span><span class="p">(</span><span class="n">Player</span><span class="p">,</span> <span class="n">Data</span><span class="p">)</span>
+    <span class="n">HandleCorruption</span> <span class="o">=</span> <span class="kr">function</span><span class="p">(</span><span class="n">Player</span><span class="p">)</span>
         <span class="nb">print</span><span class="p">(</span><span class="n">Player</span><span class="p">.</span><span class="n">Name</span> <span class="o">..</span> <span class="s2">&quot; has bad  data&quot;</span><span class="p">)</span>
-        <span class="kd">local</span> <span class="n">File2</span> <span class="o">=</span> <span class="n">Data</span><span class="p">.</span><span class="n">Data</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span>
-        <span class="kr">if</span> <span class="n">File2</span> <span class="kr">then</span>
-            <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;revert&#39;</span><span class="p">)</span>
-            <span class="n">Data</span><span class="p">.</span><span class="n">Data</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="n">File2</span>
-            <span class="n">Data</span><span class="p">.</span><span class="n">Corrupted</span> <span class="o">=</span> <span class="kc">false</span>
-            <span class="kr">return</span> <span class="kc">true</span>
-        <span class="kr">end</span>
     <span class="kr">end</span><span class="p">,</span>
     <span class="n">BeforeSave</span> <span class="o">=</span> <span class="kr">function</span><span class="p">(</span><span class="n">Player</span><span class="p">,</span> <span class="n">Data</span><span class="p">)</span> 
         <span class="nb">print</span><span class="p">(</span><span class="n">Player</span><span class="p">.</span><span class="n">Name</span> <span class="o">..</span> <span class="s2">&quot; is about to save&quot;</span><span class="p">)</span> 
         <span class="kr">return</span> <span class="n">Data</span>
     <span class="kr">end</span><span class="p">,</span>
     <span class="n">BeforeInitialGet</span> <span class="o">=</span> <span class="kr">function</span><span class="p">(</span><span class="n">Player</span><span class="p">,</span> <span class="n">Data</span><span class="p">)</span>
-        <span class="nb">print</span><span class="p">(</span><span class="n">Player</span><span class="p">.</span><span class="n">Name</span> <span class="o">..</span> <span class="s2">&quot; has data&quot;</span><span class="p">)</span>
+        <span class="nb">print</span><span class="p">(</span><span class="n">Player</span><span class="p">.</span><span class="n">Name</span> <span class="o">..</span> <span class="s2">&quot; is getting  data&quot;</span><span class="p">)</span>
         <span class="kr">return</span> <span class="n">Data</span>
     <span class="kr">end</span><span class="p">,</span>
 
 <span class="p">})</span>
 
 <span class="n">game</span><span class="p">.</span><span class="n">Players</span><span class="p">.</span><span class="n">PlayerAdded</span><span class="p">:</span><span class="n">Connect</span><span class="p">(</span><span class="kr">function</span><span class="p">(</span><span class="n">Player</span><span class="p">)</span>
-    <span class="kd">local</span> <span class="n">Profile</span> <span class="o">=</span> <span class="n">Lionstore</span><span class="p">.</span><span class="n">new</span><span class="p">(</span><span class="s2">&quot;key2825122&quot;</span><span class="p">,</span> <span class="n">Player</span><span class="p">)</span>
-
-    <span class="n">Profile</span><span class="p">:</span><span class="n">habitat</span><span class="p">(</span><span class="kr">function</span><span class="p">(</span><span class="n">Data</span><span class="p">)</span>
-        <span class="n">Profile</span><span class="p">:</span><span class="n">update</span><span class="p">(</span><span class="kr">function</span><span class="p">()</span>
-            <span class="n">Data</span><span class="p">.</span><span class="n">Log</span> <span class="o">+=</span> <span class="mi">1</span>
-            <span class="kr">return</span> <span class="n">Data</span>
-        <span class="kr">end</span><span class="p">)</span>
-        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;person logged in; &quot;</span> <span class="o">..</span> <span class="n">Data</span><span class="p">.</span><span class="n">Log</span><span class="p">)</span>
-    <span class="kr">end</span><span class="p">)</span>
-<span class="kr">end</span><span class="p">)</span>
-<span class="kd">local</span> <span class="n">Lionstore</span> <span class="o">=</span> <span class="nb">require</span><span class="p">(</span><span class="n">script</span><span class="p">.</span><span class="n">Parent</span><span class="p">.</span><span class="n">Lionstore</span><span class="p">)</span>
-
-<span class="n">Lionstore</span><span class="p">.</span><span class="n">SetInfo</span><span class="p">({</span>
-    <span class="n">Partitions</span> <span class="o">=</span> <span class="mi">9</span><span class="p">,</span>
-    <span class="n">Default</span> <span class="o">=</span> <span class="p">{</span><span class="n">Log</span> <span class="o">=</span> <span class="mi">0</span><span class="p">},</span>
-    <span class="n">HandleLocked</span> <span class="o">=</span> <span class="kr">function</span><span class="p">(</span><span class="n">Player</span><span class="p">)</span>
-        <span class="nb">print</span><span class="p">(</span><span class="n">Player</span><span class="p">.</span><span class="n">Name</span> <span class="o">..</span> <span class="s2">&quot; has data loaded elsewhere&quot;</span><span class="p">)</span>
-        <span class="kd">local</span> <span class="n">Profile</span> <span class="o">=</span> <span class="n">Lionstore</span><span class="p">.</span><span class="n">GetProfile</span><span class="p">(</span><span class="n">Player</span><span class="p">)</span>
-        <span class="n">Profile</span><span class="p">.</span><span class="n">Release</span><span class="p">.</span><span class="n">Event</span><span class="p">:</span><span class="n">Wait</span><span class="p">()</span>
-        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;other servers done&quot;</span><span class="p">)</span>
-        <span class="kr">return</span> <span class="kc">true</span>
-    <span class="kr">end</span><span class="p">,</span>
-    <span class="n">HandleCorruption</span> <span class="o">=</span> <span class="kr">function</span><span class="p">(</span><span class="n">Player</span><span class="p">,</span> <span class="n">Data</span><span class="p">)</span>
-        <span class="nb">print</span><span class="p">(</span><span class="n">Player</span><span class="p">.</span><span class="n">Name</span> <span class="o">..</span> <span class="s2">&quot; has bad  data&quot;</span><span class="p">)</span>
-        <span class="kd">local</span> <span class="n">File2</span> <span class="o">=</span> <span class="n">Data</span><span class="p">.</span><span class="n">Data</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span>
-        <span class="kr">if</span> <span class="n">File2</span> <span class="kr">then</span>
-            <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;revert&#39;</span><span class="p">)</span>
-            <span class="n">Data</span><span class="p">.</span><span class="n">Data</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="n">File2</span>
-            <span class="n">Data</span><span class="p">.</span><span class="n">Corrupted</span> <span class="o">=</span> <span class="kc">false</span>
-            <span class="kr">return</span> <span class="kc">true</span>
-        <span class="kr">end</span>
-    <span class="kr">end</span><span class="p">,</span>
-    <span class="n">BeforeSave</span> <span class="o">=</span> <span class="kr">function</span><span class="p">(</span><span class="n">Player</span><span class="p">,</span> <span class="n">Data</span><span class="p">)</span> 
-        <span class="nb">print</span><span class="p">(</span><span class="n">Player</span><span class="p">.</span><span class="n">Name</span> <span class="o">..</span> <span class="s2">&quot; is about to save&quot;</span><span class="p">)</span> 
-        <span class="kr">return</span> <span class="n">Data</span>
-    <span class="kr">end</span><span class="p">,</span>
-    <span class="n">BeforeInitialGet</span> <span class="o">=</span> <span class="kr">function</span><span class="p">(</span><span class="n">Player</span><span class="p">,</span> <span class="n">Data</span><span class="p">)</span>
-        <span class="nb">print</span><span class="p">(</span><span class="n">Player</span><span class="p">.</span><span class="n">Name</span> <span class="o">..</span> <span class="s2">&quot; has data&quot;</span><span class="p">)</span>
-        <span class="kr">return</span> <span class="n">Data</span>
-    <span class="kr">end</span><span class="p">,</span>
-
-<span class="p">})</span>
-
-<span class="n">game</span><span class="p">.</span><span class="n">Players</span><span class="p">.</span><span class="n">PlayerAdded</span><span class="p">:</span><span class="n">Connect</span><span class="p">(</span><span class="kr">function</span><span class="p">(</span><span class="n">Player</span><span class="p">)</span>
-    <span class="kd">local</span> <span class="n">Profile</span> <span class="o">=</span> <span class="n">Lionstore</span><span class="p">.</span><span class="n">new</span><span class="p">(</span><span class="s2">&quot;key2825122&quot;</span><span class="p">,</span> <span class="n">Player</span><span class="p">)</span>
+    <span class="kd">local</span> <span class="n">Profile</span> <span class="o">=</span> <span class="n">Lionstore</span><span class="p">.</span><span class="n">new</span><span class="p">(</span><span class="s2">&quot;key28285122&quot;</span><span class="p">,</span> <span class="n">Player</span><span class="p">)</span>
 
     <span class="n">Profile</span><span class="p">:</span><span class="n">habitat</span><span class="p">(</span><span class="kr">function</span><span class="p">(</span><span class="n">Data</span><span class="p">)</span>
         <span class="n">Profile</span><span class="p">:</span><span class="n">update</span><span class="p">(</span><span class="kr">function</span><span class="p">()</span>
