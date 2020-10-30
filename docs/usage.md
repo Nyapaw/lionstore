@@ -1,4 +1,5 @@
 # Usage
+Lionstore automatically keeps profiles alive as long as the player has not left. Saves are brute force and will be retried until the save succeeds.
 
 ```lua
 local Lionstore = require(script.Parent.Lionstore)

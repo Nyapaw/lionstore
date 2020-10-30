@@ -233,7 +233,7 @@ function Lionstore:Lock()
     self:setDS(function(Data)
         Data.Locked = os.time() + 600
         return Data
-    end, "lock")
+    end, "lock"):await()
 end
 
 function Lionstore:Save()
