@@ -665,7 +665,7 @@
 <div class="codehilite"><pre><span></span><code><span class="err">Lock()</span>
 </code></pre></div>
 
-<p>Yields until the profile is locked. The library automatically locks the profile every 4 minutes so you can forget about this. Adds 10 minutes to the lock timer.</p>
+<p>Yields until the profile is locked. The library automatically locks the profile every 4 minutes so you can forget about this. Adds 10 minutes + os.time to the lock timer.</p>
 <h3 id="save">:Save</h3>
 <div class="codehilite"><pre><span></span><code><span class="err">Save() -&gt; Promise</span>
 </code></pre></div>
