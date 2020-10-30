@@ -27,14 +27,14 @@ Calls when the profile is locked and does not load.
 Calls when the profile is corrupted and does not load.
 
 ### BeforeSave
-`modifier(Player: instance, Data: table) -> table`
+`modifier(Player: instance, Data: table) -> Data`
 
-Calls when the profile is about to be saved. **Must return profile data**.
+Calls when the profile is about to be saved. **Must return profile data**. Use to serialize.
 
 ### BeforeInitialGet
-`modifier(Player: instance, Data: table) -> table`
+`modifier(Player: instance, Data: table) -> Data`
 
-Calls when after a value is received from Roblox data stores. **Must return profile data**.
+Calls when after a value is received from Roblox data stores. **Must return profile data**. Use to deserialize.
 
 ## Lionstore
 ### .SetInfo
@@ -75,7 +75,7 @@ Returns the data.
 
 ### :update
 ```
-update(modifier(data: table))
+update(modifier(data: table) -> data)
 ```
 
 Update the data. **Must return profile data**.
