@@ -94,7 +94,7 @@ Create a habitat where the `run` callback is passed data. Acts as a pcall. Whene
 ```
 Lock()
 ```
-Yields until the profile is locked. The library automatically locks the profile every 4 minutes so you can forget about this. Adds 10 minutes to the lock timer.
+Yields until the profile is locked. The library automatically locks the profile every 4 minutes so you can forget about this. Adds 10 minutes + os.time to the lock timer.
 
 ### :Save
 ```
