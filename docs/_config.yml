@@ -1,2 +1,7 @@
 theme:
   name: material
+
+nav:
+  - Home: 'index.md'
+  - Usage: 'usage.md'
+  - API: 'api.md'
