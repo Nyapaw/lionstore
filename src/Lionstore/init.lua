@@ -295,6 +295,7 @@ end
 function Lionstore:Lock()
     print("Lock", self.Player.Name)
     local P = self:setDS(function(Data)
+        Data = self:applyBS(Data)
         Data.Locked = os.time() + 600
         return Data
     end, true)
@@ -305,18 +306,24 @@ function Lionstore:Lock()
     P:await()
 end
 
+function Lionstore:applyBS(DataTable)
+    DataTable.Data = self.CurrentData.list
+
+    local Info = Lionstore.Info
+
+    if Info.BeforeSave then
+        DataTable.Data[1] = Info.BeforeSave(self.Player, DataTable.Data[1])
+    end
+
+    return DataTable
+end
+
 function Lionstore:Save()
     
     return self:setDS(function(DataTable)
         DataTable.Locked = 0
         DataTable.VERSION += 1
-        DataTable.Data = self.CurrentData.list
-
-        local Info = Lionstore.Info
-
-        if Info.BeforeSave then
-            DataTable.Data[1] = Info.BeforeSave(self.Player, DataTable.Data[1])
-        end    
+        DataTable = self:applyBS(DataTable)
  
         return DataTable
     end)
