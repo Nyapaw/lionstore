@@ -169,14 +169,14 @@ function Lionstore:update(Callback)
     self.CurrentData.list[1] = Data
 end
 
-function Lionstore:habitat(Callback, ErrHandle)
+function Lionstore:habitat(Callback, ErrHandle, ...)
     local Success, Result = pcall(Callback, self:get())
 
     if (not Success) then
         self.MainData.Corrupted = true
         warn("habitat err;", debug.traceback())
         if (ErrHandle) then
-            ErrHandle(Result)
+            ErrHandle(Result, ...)
         end;
     end
 end

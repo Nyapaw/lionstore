@@ -89,10 +89,10 @@ Update the data. **Must return profile data**.
 
 ### :habitat
 ```
-habitat(run: callback(data: table), onCorrupt?: callback(error: string))
+habitat(run: callback(data: table), onCorrupt?: callback(error: string, identifiers?: ...), identifiers?: ...)
 ```
 
-Create a habitat where the `run` callback is passed data. Acts as a pcall. Whenever an error arises, sets profile status to corrupt and calls `onCorrupt`.
+Create a habitat where the `run` callback is passed data. Acts as a pcall. Whenever an error arises, sets profile status to corrupt and calls `onCorrupt`. Optional identifiers can be passed into the callback.
 
 !!! info
     This is the recommended way to run code in which you are dealing with profile data, no matter if you are getting or setting!
