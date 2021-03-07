@@ -678,7 +678,7 @@
 <p>The default data loaded into a new player. If missing entries of a preloaded profile exists, the data will be <a href="https://madstudioroblox.github.io/ProfileService/api/#profilereconcile">reconciled</a>.</p>
 <h3 id="disregardlimitcheck">DisregardLimitCheck</h3>
 <p><code>bool</code></p>
-<p>Don't call JSONDecode whenever you update the data. Suitable if you're changing data tons of times with large tables.</p>
+<p>Don't call JSONDecode whenever you update the data and gets rid of the limit check. Suitable if you're changing data tons of times with large tables and you know it won't be over the partition limit.</p>
 <h3 id="handlelocked">HandleLocked</h3>
 <p><code>callback(Player: instance, Data: MainData) -&gt; boolean</code></p>
 <p>Calls when the profile is locked and does not load.
