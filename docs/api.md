@@ -18,7 +18,7 @@ The default data loaded into a new player. If missing entries of a preloaded pro
 ### DisregardLimitCheck
 `bool`
 
-Don't call JSONDecode whenever you update the data. Suitable if you're changing data tons of times with large tables.
+Don't call JSONDecode whenever you update the data and gets rid of the limit check. Suitable if you're changing data tons of times with large tables and you know it won't be over the partition limit.
 
 ### HandleLocked
 `callback(Player: instance, Data: MainData) -> boolean`
