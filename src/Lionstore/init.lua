@@ -162,8 +162,10 @@ function Lionstore:update(Callback)
     
     local Data = Callback(self:get())
     assert(Data, "no return")
-    local Len = #HttpService:JSONEncode(Data)
-    assert(Len <= Lionstore.Info.Chunk, ("data exceed %d char"):format(Len))
+    if (not Lionstore.Info.DisregardLimitCheck) then
+        local Len = #HttpService:JSONEncode(Data)
+        assert(Len <= Lionstore.Info.Chunk, ("data exceed %d char"):format(Len))
+    end;
     self.CurrentData.list[1] = Data
 end
 

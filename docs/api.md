@@ -15,6 +15,11 @@ Must be 1+, allocates a DataStore into smaller partitions with limit `DataSize/P
 
 The default data loaded into a new player. If missing entries of a preloaded profile exists, the data will be [reconciled](https://madstudioroblox.github.io/ProfileService/api/#profilereconcile).
 
+### DisregardLimitCheck
+`bool`
+
+Don't call JSONDecode whenever you update the data. Suitable if you're changing data tons of times with large tables.
+
 ### HandleLocked
 `callback(Player: instance, Data: MainData) -> boolean`
 
