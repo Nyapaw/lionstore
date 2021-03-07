@@ -726,10 +726,10 @@ If true is returned, continue loading.</p>
 
 <p>Update the data. <strong>Must return profile data</strong>.</p>
 <h3 id="habitat">:habitat</h3>
-<div class="codehilite"><pre><span></span><code><span class="err">habitat(run: callback(data: table), onCorrupt?: callback(error: string))</span>
+<div class="codehilite"><pre><span></span><code><span class="err">habitat(run: callback(data: table), onCorrupt?: callback(error: string, identifiers?: ...), identifiers?: ...)</span>
 </code></pre></div>
 
-<p>Create a habitat where the <code>run</code> callback is passed data. Acts as a pcall. Whenever an error arises, sets profile status to corrupt and calls <code>onCorrupt</code>.</p>
+<p>Create a habitat where the <code>run</code> callback is passed data. Acts as a pcall. Whenever an error arises, sets profile status to corrupt and calls <code>onCorrupt</code>. Optional identifiers can be passed into the callback.</p>
 <div class="admonition info">
 <p class="admonition-title">Info</p>
 <p>This is the recommended way to run code in which you are dealing with profile data, no matter if you are getting or setting!</p>
