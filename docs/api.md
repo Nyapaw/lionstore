@@ -73,6 +73,18 @@ loaded() -> boolean
 
 Returns whether the data is loaded.
 
+### .Loaded
+```
+Promise
+```
+
+Allows you to wait for a profile to be loaded. Ex;
+```lua
+if not Profile:loaded() then
+    Profile.Loaded:await()
+end
+```
+
 ### :get
 ```
 get() -> table
