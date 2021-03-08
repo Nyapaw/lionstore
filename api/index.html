@@ -358,6 +358,13 @@
 </li>
         
           <li class="md-nav__item">
+  <a href="#loaded_1" class="md-nav__link">
+    .Loaded
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
   <a href="#get" class="md-nav__link">
     :get
   </a>
@@ -579,6 +586,13 @@
 </li>
         
           <li class="md-nav__item">
+  <a href="#loaded_1" class="md-nav__link">
+    .Loaded
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
   <a href="#get" class="md-nav__link">
     :get
   </a>
@@ -715,6 +729,16 @@ If true is returned, continue loading.</p>
 </code></pre></div>
 
 <p>Returns whether the data is loaded.</p>
+<h3 id="loaded_1">.Loaded</h3>
+<div class="codehilite"><pre><span></span><code><span class="err">Promise</span>
+</code></pre></div>
+
+<p>Allows you to wait for a profile to be loaded. Ex;</p>
+<div class="codehilite"><pre><span></span><code><span class="kr">if</span> <span class="ow">not</span> <span class="n">Profile</span><span class="p">:</span><span class="n">loaded</span><span class="p">()</span> <span class="kr">then</span>
+    <span class="n">Profile</span><span class="p">.</span><span class="n">Loaded</span><span class="p">:</span><span class="n">await</span><span class="p">()</span>
+<span class="kr">end</span>
+</code></pre></div>
+
 <h3 id="get">:get</h3>
 <div class="codehilite"><pre><span></span><code><span class="err">get() -&gt; table</span>
 </code></pre></div>
