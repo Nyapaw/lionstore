@@ -51,7 +51,9 @@ Lionstore.Info = {
     end,
     --BeforeSave
     --BeforeInitialGet
+    --Retries
 }
+Lionstore.Modifiers = {}
 
 function Lionstore.SetInfo(Info)
     Lionstore.Info = Info;
@@ -183,8 +185,13 @@ end
 
 function Lionstore:GetChannel()
     return Promise.defer(function(resolve)
-        resolve(MessagingService:SubscribeAsync(self.Key, function()
-            self.Release:Fire()
+        resolve(MessagingService:SubscribeAsync(self.Key, function(data)
+            data = HttpService:JSONDecode(data.Data)
+            if data.code == 'release' then
+                self.Release:Fire()
+            else
+                self.MainData.list[1] = Lionstore.Modifiers[data.code](self.Key, self:get(), data.args)
+            end
         end))
     end):andThen(function(Con)
         self.OnUpdate = Con
@@ -198,13 +205,109 @@ end
 
 function Lionstore:SendRelease()
     return Promise.new(function(resolve)
-        resolve(MessagingService:PublishAsync(self.Key))
+        resolve(MessagingService:PublishAsync(self.Key, HttpService:JSONEncode{code = 'release'}))
     end):catch(function(err)
     
         warn(err)
         wait(5)
         return self:SendRelease()
     end)
+end
+
+function Lionstore.read(Key, PlayerId, i)
+    local Retries = Lionstore.Info.Retries or 5
+    if not i then
+        i = 0
+    end
+    i += 1
+
+    local Datastore = DataStoreService:GetDataStore(Key)
+    PlayerId = tostring(PlayerId)
+
+    local this = Promise.defer(function(resolve, reject)
+        local Success, Result = pcall(Datastore.GetAsync, Datastore, PlayerId)
+
+        if Success then 
+            if not Result then
+                reject({error = ("Player with id %s doesn't exist"):format(PlayerId)})
+            end
+            resolve(Result)
+        else
+            reject(Result)
+        end
+    end):andThen(function(Result)
+        Result = HttpService:JSONDecode(Result)
+        local Info = {
+            Locked = Result.Locked,
+            Data = Result.Data[1]
+        }
+        return true, Info
+
+    end):catch(function(Result)
+        warn(Result)
+        if i >= Retries then 
+            return false, Result.error
+        end
+        print("read fail", PlayerId, "retry", i)
+        wait(5)
+        
+        return Lionstore.read(Key, PlayerId, i)
+    end)
+
+    return this:await()
+end
+
+function Lionstore.modify(Key, PlayerId, Id, Args, i)
+    assert(Lionstore.Modifiers[Id], ('Modifier %s doesn\'t exist'):format(Id))
+
+    local Retries = Lionstore.Info.Retries or 5
+    if not i then
+        i = 0
+    end
+    i += 1
+
+    local Datastore = DataStoreService:GetDataStore(Key)
+    PlayerId = tostring(PlayerId)
+
+    local this = Promise.defer(function(resolve, reject)
+        local Success, Result = Lionstore.read(Key, PlayerId)
+
+        if Success then 
+            resolve(Result)
+        else
+            reject(Result)
+        end
+    end):andThen(function(Result)
+        
+        return Promise.defer(function(resolve)
+            if Result.Locked then
+                resolve(MessagingService:PublishAsync(PlayerId, HttpService:JSONEncode{code = Id, args = Args}))
+            else
+                resolve(Datastore:UpdateAsync(PlayerId, function(Data)
+                    Data = HttpService:JSONDecode(Data)
+                    Data.Data[1] = Lionstore.Modifiers[Id](PlayerId, Data.Data[1], Args)
+                    return HttpService:JSONEncode(Data)
+                end))
+            end
+        end)
+    end)
+    :andThenReturn(true)
+    :catch(function(Result)
+        warn(Result)
+        if i >= Retries then 
+            return false, Result
+        end
+        print("modify fail", PlayerId, "retry", i)
+        wait(5)
+        
+        return Lionstore.modify(Key, PlayerId, Id, Args, i)
+    end)
+
+    return this:await()
+end
+
+function Lionstore.SetModifier(Id, Callback)
+    Lionstore.Modifiers[Id] = Callback
 end
 
 function Lionstore:getDS()

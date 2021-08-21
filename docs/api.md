@@ -51,6 +51,25 @@ SetInfo(InfoSettings)
 
 Set lionstore settings.
 
+### .read
+```
+read(Key: string, PlayerId: int) -> Success: bool, Result: string | table
+```
+
+Grabs the latest revision data from a player of `PlayerId` with a given DataStore `Key`. Yields. If unsuccessful, returns string error.
+### .modify
+```
+modify(Key: string, PlayerId: int, Id: string, Args: variant) -> Success: bool, Error?: string
+```
+
+Modifies a player's data regardless of live or not, of `PlayerId` with a given DataStore `Key`. `Id` is the supplied callback key passed in `.SetModifier()` and supplies it with `Args`.
+
+### .SetModifier
+```
+SetModifier(Id: string, Callback: callback(PlayerId: string, Data: table, Args: variant))
+```
+Sets a modifier that is called from `.modify()`.
+
 ### .GetProfile
 ```
 GetProfile(Player: instance) -> Profile?
