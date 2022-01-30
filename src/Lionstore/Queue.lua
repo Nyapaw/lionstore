@@ -12,9 +12,8 @@ end
 
 function Queue:push(obj)
     local MAX = self.MAX;
-    table.insert(self.list, 1, obj);
-    if (#self.list > MAX) then
-        table.remove(self.list, MAX+1)
+    if not((#self.list + 1) > MAX) then
+        table.insert(self.list, 1, obj);
     end;
 end;
 
